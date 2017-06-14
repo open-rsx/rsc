@@ -2,7 +2,7 @@
  *
  * This file is part of the RSC project.
  *
- * Copyright (C) 2012, 2014 Jan Moringen <jmoringe@techfak.uni-bielefeld.de>
+ * Copyright (C) 2012-2017 Jan Moringen <jmoringe@techfak.uni-bielefeld.de>
  *
  * This file may be licensed under the terms of the
  * GNU Lesser General Public License Version 3 (the ``LGPL''),
@@ -49,8 +49,7 @@ Manager::Manager()
            .getLogger("rsc.plugins.Manager")) {
 }
 
-Manager::~Manager() {
-}
+Manager::~Manager() = default;
 
 vector<path> Manager::getPath() const {
   return this->path;
@@ -130,11 +129,9 @@ void Manager::addPath(const boost::filesystem::path& path) {
 
 set<PluginPtr> Manager::getPlugins(const boost::regex& regex) const {
     set<PluginPtr> result;
-
-    for (PluginMap::const_iterator it = this->plugins.begin();
-         it != this->plugins.end(); ++it) {
-        if (regex_match(it->first, regex)) {
-            result.insert(it->second);
+    for (auto entry : this->plugins) {
+        if (regex_match(entry.first, regex)) {
+            result.insert(entry.second);
         }
     }
     return result;

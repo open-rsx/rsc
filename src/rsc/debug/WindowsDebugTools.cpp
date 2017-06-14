@@ -26,8 +26,6 @@
 
 #include "WindowsDebugTools.h"
 
-using namespace std;
-
 namespace rsc {
 namespace debug {
 
@@ -38,8 +36,8 @@ WindowsDebugTools::WindowsDebugTools() {
 WindowsDebugTools::~WindowsDebugTools() {
 }
 
-vector<string> WindowsDebugTools::createBacktrace(const unsigned int& maxElements) {
-    return vector<string> ();
+std::vector<std::string> WindowsDebugTools::createBacktrace(const unsigned int& maxElements) {
+    return std::vector<std::string> ();
 }
 
 }

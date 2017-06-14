@@ -68,9 +68,8 @@ path prefixConfigDirectory(const path& prefix) {
     // prefix specially.
     if (prefix == "/usr") {
         return systemConfigDirectory();
-    } else {
-        return prefix / "etc/";
     }
+    return prefix / "etc/";
 #else
     return prefix / "etc";
 #endif
@@ -121,9 +120,8 @@ string transformName(const string& name, const string& prefix,
         }
         transform(start, name.end(), back_inserter(result), &::tolower);
         return result;
-    } else {
-        return "";
     }
+    return "";
 }
 
 EnvironmentVariableSource::Match::Match(const string& rawName,

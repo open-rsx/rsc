@@ -2,7 +2,7 @@
  *
  * This file is part of the RSC project
  *
- * Copyright (C) 2011 Jan Moringen
+ * Copyright (C) 2011-2017 Jan Moringen
  *
  * This file may be licensed under the terms of the
  * GNU Lesser General Public License Version 3 (the ``LGPL''),
@@ -29,8 +29,7 @@
 namespace rsc {
 namespace config {
 
-OptionHandler::~OptionHandler() {
-}
+OptionHandler::~OptionHandler() = default;
 
 }
 }

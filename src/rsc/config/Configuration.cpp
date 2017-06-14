@@ -2,7 +2,7 @@
  *
  * This file is part of the RSC project
  *
- * Copyright (C) 2012, 2013, 2016 Jan Moringen <jmoringe@techfak.uni-bielefeld.de>
+ * Copyright (C) 2012-2017 Jan Moringen <jmoringe@techfak.uni-bielefeld.de>
  *
  * This file may be licensed under the terms of the
  * GNU Lesser General Public License Version 3 (the ``LGPL''),
@@ -68,13 +68,13 @@ defaultConfigurationFiles(const std::string& fileVariableName) {
     boost::shared_ptr<std::string> files;
     if ((files = getEnvironmentVariable(fileVariableName))) {
         return splitSequenceValue(*files);
-    } else {
-        std::vector<std::string> result;
-        result.push_back(CONFIG_FILE_KEY_PREFIX);
-        result.push_back(CONFIG_FILE_KEY_USER);
-        result.push_back(CONFIG_FILE_KEY_PWD);
-        return result;
     }
+
+    std::vector<std::string> result;
+    result.push_back(CONFIG_FILE_KEY_PREFIX);
+    result.push_back(CONFIG_FILE_KEY_USER);
+    result.push_back(CONFIG_FILE_KEY_PWD);
+    return result;
 }
 
 std::pair<boost::filesystem::path, std::string>
@@ -85,17 +85,18 @@ resolveConfigurationFile(const std::string&             spec,
         return std::make_pair(prefixConfigDirectory(prefix)
                               / configFileName,
                               "Prefix wide config file");
-    } else if (spec == CONFIG_FILE_KEY_USER) {
+    }
+    if (spec == CONFIG_FILE_KEY_USER) {
         return std::make_pair(userConfigDirectory()
                               / configFileName,
                               "User config file");
-    } else if (spec == CONFIG_FILE_KEY_PWD) {
+    }
+    if (spec == CONFIG_FILE_KEY_PWD) {
         return std::make_pair(configFileName,
                               "Current directory file");
-    } else {
-        return std::make_pair(boost::filesystem::path(spec),
-                              "User specified config file");
     }
+    return std::make_pair(boost::filesystem::path(spec),
+                          "User specified config file");
 }
 
 void describeFileStream(const std::string&             label,
@@ -163,9 +164,8 @@ void configure(OptionHandler&                  handler,
         cerr << "  1. Configuration files" << endl;
     }
     unsigned int index = 1;
-    for (std::vector<std::string>::const_iterator it = configurationFiles.begin();
-         it != configurationFiles.end(); ++it) {
-        processConfigFile(index++, *it, prefix, configFileName, debug, handler);
+    for (auto file : configurationFiles) {
+        processConfigFile(index++, file, prefix, configFileName, debug, handler);
     }
 
     // 2) Add environment Variables

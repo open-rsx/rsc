@@ -26,8 +26,6 @@
 
 #include "CollectingOptionHandler.h"
 
-using namespace std;
-
 namespace rsc {
 namespace config {
 
@@ -39,15 +37,14 @@ CollectingOptionHandler::CollectingOptionHandler(
         options(properties) {
 }
 
-void CollectingOptionHandler::handleOption(const vector<string>& key,
-        const string& value) {
-    string name;
-    for (vector<string>::const_iterator it = key.begin(); it != key.end();
-            ++it) {
-        if (!(it == key.begin())) {
+void CollectingOptionHandler::handleOption(const std::vector<std::string>& key,
+                                           const std::string& value) {
+    std::string name;
+    for (std::string component : key) {
+        if (!(component == key.begin())) {
             name += ".";
         }
-        name += *it;
+        name += component;
     }
     this->options[name] = value;
 }

@@ -2,7 +2,7 @@
  *
  * This file is part of the RSC project
  *
- * Copyright (C) 2011, 2012 Jan Moringen
+ * Copyright (C) 2011-2017 Jan Moringen
  *
  * This file may be licensed under the terms of the
  * GNU Lesser General Public License Version 3 (the ``LGPL''),
@@ -102,8 +102,9 @@ bool ConfigFileSource::getOption(string& name, string& value) {
 
         // Strip '#' comments and whitespace
         string::size_type n;
-        if ((n = line.find('#')) != string::npos)
+        if ((n = line.find('#')) != string::npos) {
             line = line.substr(0, n);
+        }
         line = trim(line);
 
         if (!line.empty()) {

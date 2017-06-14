@@ -33,12 +33,10 @@
 namespace rsc {
 namespace config {
 
-using namespace std;
+ConfigSource::~ConfigSource() = default;
 
-ConfigSource::~ConfigSource() {
-}
-
-void ConfigSource::splitKeyAtDots(const string& input, vector<string>& output) {
+void ConfigSource::splitKeyAtDots(const std::string& input,
+                                  std::vector<std::string>& output) {
     typedef boost::escaped_list_separator<char> SeparatorType;
     typedef boost::tokenizer<SeparatorType> TokenizerType;
 
@@ -50,15 +48,14 @@ void ConfigSource::splitKeyAtDots(const string& input, vector<string>& output) {
         throw invalid_argument(e.what());
     }
 
-    for (vector<string>::const_iterator outputIt = output.begin();
-            outputIt != output.end(); ++outputIt) {
-        if (outputIt->empty()) {
+    for (auto component : output) {
+        if (component.empty()) {
             throw invalid_argument("Empty component in key '" + input + "'");
         }
     }
 
     if (output.empty()) {
-        throw invalid_argument("Option key is empty");
+        throw std::invalid_argument("Option key is empty");
     }
 
 }

@@ -2,7 +2,7 @@
  *
  * This file is part of the RSC project
  *
- * Copyright (C) 2011, 2014 Jan Moringen
+ * Copyright (C) 2011-2017 Jan Moringen
  *
  * This file may be licensed under the terms of the
  * GNU Lesser General Public License Version 3 (the ``LGPL''),
@@ -26,19 +26,15 @@
 
 #include "PropertyHandler.h"
 
-using namespace std;
-
-using namespace rsc::runtime;
-
 namespace rsc {
 namespace config {
 
-const Properties& PropertyHandler::getProperties() const {
+const runtime::Properties& PropertyHandler::getProperties() const {
     return this->result;
 }
 
-void PropertyHandler::handleOption(const vector<string>& key,
-                                   const string& value) {
+void PropertyHandler::handleOption(const std::vector<std::string>& key,
+                                   const std::string& value) {
     this->result[key[0]] = value;
 }
 

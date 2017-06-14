@@ -2,7 +2,7 @@
  *
  * This file is part of the RSC project.
  *
- * Copyright (C) 2016 Jan Moringen <jmoringe@techfak.uni-bielefeld.de>
+ * Copyright (C) 2016, 2017 Jan Moringen <jmoringe@techfak.uni-bielefeld.de>
  *
  * This file may be licensed under the terms of the
  * GNU Lesser General Public License Version 3 (the ``LGPL''),
@@ -66,9 +66,7 @@ vector<string> mergeSequenceValue(const string&         description,
     // Add all specified values. The empty string, produced by "::"
     // means that the previous value should be spliced in.
     vector<string> result;
-    for (vector<string>::const_iterator it = values.begin();
-         it != values.end(); ++it) {
-        const string value = *it;
+    for (auto value : values) {
         if (value.empty()) {
             copy(previous.begin(), previous.end(),
                  inserter(result, result.end()));

@@ -55,8 +55,7 @@ Configurator::Configurator(ManagerPtr                             manager,
     this->path.push_back("");
 }
 
-Configurator::~Configurator() {
-}
+Configurator::~Configurator() = default;
 
 void Configurator::execute(bool errorOnMissing) {
     addPathEntries(this->path);
@@ -97,9 +96,7 @@ void Configurator::addDefaultPath() {
 }
 
 void Configurator::addPathEntries(const vector<string>& entries) {
-    for (vector<string>::const_iterator it = entries.begin();
-         it != entries.end(); ++it) {
-        string path = *it;
+    for (auto path : entries) {
         try {
             if (path.empty()) {
                 path = "<default path>"; // for exception message
@@ -119,12 +116,10 @@ void Configurator::addPathEntries(const vector<string>& entries) {
 
 void Configurator::loadPlugins(const vector<string>& names,
                                bool errorOnMissing) {
-    for (vector<string>::const_iterator it = names.begin();
-         it != names.end(); ++it) {
+    for (auto pattern : names) {
         // Treat each element as a regular expression. Find matching
         // plugins and load them. Note that regex syntax error can
         // cause an exception here.
-        string pattern = *it;
         RSCDEBUG(this->logger, "Looking up plugins matching pattern `"
                  << pattern << "'");
         set<PluginPtr> matches;
@@ -143,14 +138,13 @@ void Configurator::loadPlugins(const vector<string>& names,
         }
 
         // Try to load all plugins matching the pattern.
-        for (set<PluginPtr>::iterator it = matches.begin();
-             it != matches.end(); ++it) {
-            RSCDEBUG(this->logger, "Loading plugin " << (*it)->getName());
+        for (auto match : matches) {
+            RSCDEBUG(this->logger, "Loading plugin " << match->getName());
             try {
-                (*it)->ensureLoaded();
+                match->ensureLoaded();
             } catch (const std::exception& e) {
                 throw runtime_error(str(format("Failed to load plugin `%1%' as requested via configuration: %2%")
-                                        % (*it)->getName()
+                                        % match->getName()
                                         % e.what()));
             }
         }

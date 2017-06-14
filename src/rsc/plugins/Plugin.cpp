@@ -217,8 +217,7 @@ Plugin::Plugin(Impl* impl)
     : impl(impl) {
 }
 
-Plugin::~Plugin() {
-}
+Plugin::~Plugin() = default;
 
 const string& Plugin::getName() const {
     return this->impl->getName();

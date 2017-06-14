@@ -40,8 +40,7 @@ namespace debug {
 DebugTools::DebugTools() {
 }
 
-DebugTools::~DebugTools() {
-}
+DebugTools::~DebugTools() = default;
 
 DebugToolsPtr DebugTools::newInstance() {
 #if defined(DEBUGTOOLS_LINUX)
@@ -53,9 +52,8 @@ DebugToolsPtr DebugTools::newInstance() {
 
 string DebugTools::formatBacktrace(const vector<string>& trace) {
     stringstream s;
-    for (std::vector<std::string>::const_iterator traceIt = trace.begin(); traceIt
-            != trace.end(); ++traceIt) {
-        s << "\t" << *traceIt << std::endl;
+    for (auto frame : trace) {
+        s << "\t" << frame << std::endl;
     }
     return s.str();
 }
