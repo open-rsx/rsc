@@ -29,6 +29,8 @@
 
 #include <string>
 
+#include "../runtime/Properties.h"
+
 #include "LoggingSystem.h"
 
 #include "rsc/rscexports.h"
@@ -47,11 +49,11 @@ public:
     ConsoleLoggingSystem();
     virtual ~ConsoleLoggingSystem();
 
-    std::string getRegistryKey() const;
+    const std::string getName() const;
 
     LoggerPtr createLogger(const std::string& name);
 
-    static std::string getName();
+    static ConsoleLoggingSystem* create(const runtime::Properties& properties);
 
 private:
 

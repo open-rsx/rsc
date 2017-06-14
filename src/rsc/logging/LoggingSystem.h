@@ -31,8 +31,6 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include "../misc/Registry.h"
-
 #include "Logger.h"
 
 #include "rsc/rscexports.h"
@@ -45,6 +43,7 @@ namespace logging {
  * configuration. Reentrancy is required.
  *
  * @author jwienke
+ * @author jmoringe
  */
 class RSC_EXPORT LoggingSystem {
 public:
@@ -52,11 +51,11 @@ public:
     virtual ~LoggingSystem();
 
     /**
-     * Returns a unique key describing the name of the logging system.
+     * Return the name of the logging system.
      *
-     * @return name of the logging system
+     * @return The name of the logging system.
      */
-    virtual std::string getRegistryKey() const = 0;
+    virtual const std::string getName() const = 0;
 
     /**
      * Factory method to create a new system-specific logger. Given parameters
@@ -72,8 +71,6 @@ public:
 };
 
 typedef boost::shared_ptr<LoggingSystem> LoggingSystemPtr;
-
-RSC_EXPORT rsc::misc::Registry<LoggingSystem>* loggingSystemRegistry();
 
 }
 }

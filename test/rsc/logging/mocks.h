@@ -26,6 +26,8 @@
 
 #pragma once
 
+#include "rsc/runtime/Properties.h"
+
 #include "rsc/logging/Logger.h"
 #include "rsc/logging/LoggingSystem.h"
 
@@ -36,14 +38,16 @@ public:
 
 class MockLoggingSystem: public rsc::logging::LoggingSystem {
 public:
-    std::string name;
-    MockLoggingSystem(const std::string& name) :
-            name(name) {
+    const std::string getName() const {
+        return "mock";
     }
-    std::string getRegistryKey() const {
-        return name;
-    }
+
     MOCK_METHOD1(createLogger, rsc::logging::LoggerPtr(const std::string& name));
+
+    static MockLoggingSystem* create(const rsc::runtime::Properties& /*properties*/) {
+        return new MockLoggingSystem();
+    }
+
 };
 
 class StubLogger: public rsc::logging::Logger {
@@ -79,4 +83,3 @@ public:
     }
 
 };
-

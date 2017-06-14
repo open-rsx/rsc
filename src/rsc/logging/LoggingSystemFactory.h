@@ -1,9 +1,8 @@
 /* ============================================================
  *
- * This file is a part of RSC project
+ * This file is part of the RSC project
  *
- * Copyright (C) 2010 by Johannes Wienke <jwienke at techfak dot uni-bielefeld dot de>
- * Copyright (C) 2018 Jan Moringen <jmoringe@techfak.uni-bielefeld.de>
+ * Copyright (C) 2017, 2018 Jan Moringen <jmoringe@techfak.uni-bielefeld.de>
  *
  * This file may be licensed under the terms of the
  * GNU Lesser General Public License Version 3 (the ``LGPL''),
@@ -25,12 +24,38 @@
  *
  * ============================================================ */
 
+#pragma once
+
+#include <string>
+
+#include "../patterns/Singleton.h"
+#include "../patterns/Factory.h"
+
 #include "LoggingSystem.h"
+
+#include "rsc/rscexports.h"
 
 namespace rsc {
 namespace logging {
 
-LoggingSystem::~LoggingSystem() {}
+/**
+ * Singleton factory for managing and instantiating @ref LoggingSystem
+ * implementations.
+ *
+ * @author jmoringe
+ */
+class RSC_EXPORT LoggingSystemFactory: public patterns::Singleton<LoggingSystemFactory>,
+                                       public patterns::Factory<std::string, LoggingSystem> {
+    friend class patterns::Singleton<LoggingSystemFactory>;
+private:
+
+    LoggingSystemFactory();
+
+public:
+
+    virtual ~LoggingSystemFactory();
+
+};
 
 }
 }

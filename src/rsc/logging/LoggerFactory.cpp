@@ -35,17 +35,16 @@
 #include "../runtime/ContainerIO.h"
 #include "../config/ConfigFileSource.h"
 
-#include "ConsoleLoggingSystem.h"
 #include "LoggerProxy.h"
 #include "OptionBasedConfigurator.h"
+#include "LoggingSystemFactory.h"
 
 using namespace std;
 
 namespace rsc {
 namespace logging {
 
-const string LoggerFactory::DEFAULT_LOGGING_SYSTEM =
-        ConsoleLoggingSystem::getName();
+const string LoggerFactory::DEFAULT_LOGGING_SYSTEM = "console";
 const Logger::Level LoggerFactory::DEFAULT_LEVEL = Logger::LEVEL_WARN;
 
 /**
@@ -155,46 +154,26 @@ private:
 };
 
 void LoggerFactory::reselectLoggingSystem(const std::string& nameHint) {
+    std::string systemName
+        (nameHint.empty() ? DEFAULT_LOGGING_SYSTEM : nameHint);
+    LoggingSystemPtr system
+        (LoggingSystemFactory::getInstance().createInst(systemName));
 
-    set<string> keys = loggingSystemRegistry()->getKnownRegistryKeys();
-    assert(keys.count(DEFAULT_LOGGING_SYSTEM));
+    {
+        boost::recursive_mutex::scoped_lock lock(mutex);
 
-    string systemName;
-    if (nameHint == DEFAULT_LOGGING_SYSTEM) {
-        // use default if explicitly requested
+        this->loggingSystem = system;
 
-        systemName = DEFAULT_LOGGING_SYSTEM;
-
-    } else if (!nameHint.empty() && keys.count(nameHint)) {
-        // use hint if available
-
-        systemName = nameHint;
-
-    } else {
-        // auto-select fallback
-
-        if (keys.size() > 1) {
-            // do not use default if other options are available
-            keys.erase(DEFAULT_LOGGING_SYSTEM);
-        }
-        systemName = *(keys.begin());
-
-    }
-
-    boost::recursive_mutex::scoped_lock lock(mutex);
-
-    loggingSystem = loggingSystemRegistry()->getRegistree(systemName);
-
-    // update existing loggers to use the new logging system
-    if (loggerTree) {
-        const Logger::Level oldLevel = loggerTree->getLoggerProxy()->getLevel();
-        loggerTree->getLoggerProxy()->setLogger(
+        // update existing loggers to use the new logging system
+        if (loggerTree) {
+            const Logger::Level oldLevel = loggerTree->getLoggerProxy()->getLevel();
+            loggerTree->getLoggerProxy()->setLogger(
                 loggingSystem->createLogger(""));
-        loggerTree->getLoggerProxy()->getLogger()->setLevel(oldLevel);
-        loggerTree->visit(
+            loggerTree->getLoggerProxy()->getLogger()->setLevel(oldLevel);
+            loggerTree->visit(
                 LoggerTreeNode::VisitorPtr(new ReselectVisitor(loggingSystem)));
+        }
     }
-
 }
 
 LoggerProxyPtr LoggerFactory::createLogger(const LoggerTreeNode::NamePath& path,
@@ -254,7 +233,7 @@ void LoggerFactory::reconfigure(const Logger::Level& level) {
 
 string LoggerFactory::getLoggingSystemName() {
     boost::recursive_mutex::scoped_lock lock(mutex);
-    return loggingSystem->getRegistryKey();
+    return this->loggingSystem->getName();
 }
 
 void LoggerFactory::clearKnownLoggers() {

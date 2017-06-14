@@ -33,14 +33,9 @@
 
 #include "ConsoleLogger.h"
 #include "SGRConsoleLogger.h"
-#include "../misc/Registry.h"
 
 namespace rsc {
 namespace logging {
-
-std::string ConsoleLoggingSystem::getName() {
-    return "ConsoleLoggingSystem";
-}
 
 ConsoleLoggingSystem::ConsoleLoggingSystem() :
 #if defined(__linux__) or defined(__APPLE__)
@@ -54,8 +49,8 @@ ConsoleLoggingSystem::ConsoleLoggingSystem() :
 ConsoleLoggingSystem::~ConsoleLoggingSystem() {
 }
 
-std::string ConsoleLoggingSystem::getRegistryKey() const {
-    return getName();
+const std::string ConsoleLoggingSystem::getName() const {
+    return "ConsoleLoggingSystem";
 }
 
 LoggerPtr ConsoleLoggingSystem::createLogger(const std::string& name) {
@@ -66,8 +61,9 @@ LoggerPtr ConsoleLoggingSystem::createLogger(const std::string& name) {
     }
 }
 
-CREATE_GLOBAL_REGISTREE_MSG(loggingSystemRegistry(), new ConsoleLoggingSystem, ConsoleLoggingSystem, "Could it be that you have linked two different versions of RSC in your program?")
-;
+ConsoleLoggingSystem* ConsoleLoggingSystem::create(const runtime::Properties& /*properties*/) {
+    return new ConsoleLoggingSystem();
+}
 
 }
 }

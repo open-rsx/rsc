@@ -62,9 +62,10 @@ namespace rsc {
  *  - you should not include = characters and any kind of line breaks as they
  *    might interfere with configuration system
  *
- * To install new LoggingSystem instances, register them in #loggingSystemRegistry.
- * The selection of a logging system can be triggered through
- * LoggerFactory#reselectLoggingSystem using a string as a hint.
+ * To install new LoggingSystem implementations, register them in the
+ * #LoggingSystemFactory. The selection of a logging system can be
+ * triggered through LoggerFactory#reselectLoggingSystem using a
+ * string as a hint.
  *
  * As the default, a simple cout- / cerr-based LoggingSystem called
  * ConsoleLoggingSystem is provided.
