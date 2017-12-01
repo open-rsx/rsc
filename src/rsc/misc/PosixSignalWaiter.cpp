@@ -2,7 +2,7 @@
  *
  * This file is part of the RSC project
  *
- * Copyright (C) 2014 Jan Moringen <jmoringe@techfak.uni-bielefeld.de>
+ * Copyright (C) 2014, 2017 Jan Moringen <jmoringe@techfak.uni-bielefeld.de>
  *
  * This file may be licensed under the terms of the
  * GNU Lesser General Public License Version 3 (the ``LGPL''),
@@ -51,7 +51,10 @@ void handler(int signal) {
 
 void throwRuntimeError(int errorNumber, const std::string& description) {
     char buffer[256];
-    strerror_r(errorNumber, buffer, 256);
+    if (strerror_r(errorNumber, buffer, 256) != 0) {
+        throw std::runtime_error(boost::str(boost::format("Error %1% (could not determine error message: %2%)")
+                                            % errorNumber % errno));
+    }
     throw std::runtime_error(boost::str(boost::format("%1%: %2%")
                                         % description % buffer));
 }
