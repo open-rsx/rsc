@@ -2,7 +2,7 @@
  *
  * This file is part of the RSC project
  *
- * Copyright (C) 2014 Jan Moringen
+ * Copyright (C) 2014, 2018 Jan Moringen
  *
  * This file may be licensed under the terms of the
  * GNU Lesser General Public License Version 3 (the ``LGPL''),
@@ -26,6 +26,7 @@
 
 #include "HostInfo.h"
 
+#define _WIN32_WINNT 0x0600 // For GetTickCount64 as per MSDN
 #define SECURITY_WIN32
 #include <windows.h>
 #include <security.h>
