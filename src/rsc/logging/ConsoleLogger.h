@@ -26,9 +26,12 @@
 
 #pragma once
 
+#include <iostream>
+
 #include <boost/thread/recursive_mutex.hpp>
 
 #include "Logger.h"
+
 #include "rsc/rscexports.h"
 
 namespace rsc {
@@ -58,7 +61,7 @@ public:
 
     void log(const Level& level, const std::string& msg);
 
-private:
+protected:
 
     /**
      * Prints a generic header for this logger to the stream. Acquire the lock
@@ -68,10 +71,10 @@ private:
      * @param level the level of the header to generate
      * @return the stream passed in
      */
-    std::ostream& printHeader(std::ostream& stream, const Level& level);
+    virtual std::ostream& printHeader(std::ostream& stream, const Level& level);
 
-    std::string name;
-    Level level;
+    std::string                    name;
+    Level                          level;
 
     mutable boost::recursive_mutex mutex;
 
@@ -79,4 +82,3 @@ private:
 
 }
 }
-

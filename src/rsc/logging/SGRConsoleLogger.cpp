@@ -1,8 +1,8 @@
 /* ============================================================
  *
- * This file is a part of RSC project
+ * This file is part of the RSC project.
  *
- * Copyright (C) 2010 by Johannes Wienke <jwienke at techfak dot uni-bielefeld dot de>
+ * Copyright (C) 2018 Jan Moringen <jmoringe@techfak.uni-bielefeld.de>
  *
  * This file may be licensed under the terms of the
  * GNU Lesser General Public License Version 3 (the ``LGPL''),
@@ -24,40 +24,25 @@
  *
  * ============================================================ */
 
-#pragma once
+#include "SGRConsoleLogger.h"
 
-#include "LoggingSystem.h"
-#include "rsc/rscexports.h"
+#include "../misc/langutils.h"
 
 namespace rsc {
 namespace logging {
 
-/**
- * Default logging system using the console for output.
- *
- * @author jwienke
- */
-class RSC_EXPORT ConsoleLoggingSystem: public LoggingSystem {
-public:
+SGRConsoleLogger::SGRConsoleLogger(const std::string& name) :
+    ConsoleLogger(name) {
+}
 
-    ConsoleLoggingSystem();
-    virtual ~ConsoleLoggingSystem();
+SGRConsoleLogger::~SGRConsoleLogger() {}
 
-    std::string getRegistryKey() const;
-
-    LoggerPtr createLogger(const std::string& name);
-
-    static std::string getName();
-
-private:
-
-    /*
-     * True when SGRConsoleLoggers should be used. Usually initialized
-     * by calling isatty(2).
-     */
-    bool canUseSGRs;
-
-};
+std::ostream& SGRConsoleLogger::printHeader(std::ostream& stream, const Level& level) {
+    return (stream
+            << "[34m" << rsc::misc::currentTimeMillis() << "[0m"
+            << " [1m" << this->name << "[0m"
+            << " [31m[" << level << "][0m: ");
+}
 
 }
 }

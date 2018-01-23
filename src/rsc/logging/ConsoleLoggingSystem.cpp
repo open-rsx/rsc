@@ -1,8 +1,9 @@
 /* ============================================================
  *
- * This file is a part of RSC project
+ * This file is part of the RSC project
  *
  * Copyright (C) 2010 by Johannes Wienke <jwienke at techfak dot uni-bielefeld dot de>
+ * Copyright (C) 2018 Jan Moringen <jmoringe@techfak.uni-bielefeld.de>
  *
  * This file may be licensed under the terms of the
  * GNU Lesser General Public License Version 3 (the ``LGPL''),
@@ -26,7 +27,12 @@
 
 #include "ConsoleLoggingSystem.h"
 
+#if defined(__linux__) or defined(__APPLE__)
+#include <unistd.h>
+#endif
+
 #include "ConsoleLogger.h"
+#include "SGRConsoleLogger.h"
 #include "../misc/Registry.h"
 
 namespace rsc {
@@ -36,7 +42,13 @@ std::string ConsoleLoggingSystem::getName() {
     return "ConsoleLoggingSystem";
 }
 
-ConsoleLoggingSystem::ConsoleLoggingSystem() {
+ConsoleLoggingSystem::ConsoleLoggingSystem() :
+#if defined(__linux__) or defined(__APPLE__)
+    canUseSGRs(isatty(1) && isatty(2))
+#else
+    canUseSGRs(false)
+#endif
+{
 }
 
 ConsoleLoggingSystem::~ConsoleLoggingSystem() {
@@ -47,7 +59,11 @@ std::string ConsoleLoggingSystem::getRegistryKey() const {
 }
 
 LoggerPtr ConsoleLoggingSystem::createLogger(const std::string& name) {
-    return LoggerPtr(new ConsoleLogger(name));
+    if (this->canUseSGRs) {
+        return LoggerPtr(new SGRConsoleLogger(name));
+    } else {
+        return LoggerPtr(new ConsoleLogger(name));
+    }
 }
 
 CREATE_GLOBAL_REGISTREE_MSG(loggingSystemRegistry(), new ConsoleLoggingSystem, ConsoleLoggingSystem, "Could it be that you have linked two different versions of RSC in your program?")

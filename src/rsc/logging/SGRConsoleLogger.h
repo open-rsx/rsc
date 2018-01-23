@@ -1,8 +1,8 @@
 /* ============================================================
  *
- * This file is a part of RSC project
+ * This file is part of the RSC project.
  *
- * Copyright (C) 2010 by Johannes Wienke <jwienke at techfak dot uni-bielefeld dot de>
+ * Copyright (C) 2018 Jan Moringen <jmoringe@techfak.uni-bielefeld.de>
  *
  * This file may be licensed under the terms of the
  * GNU Lesser General Public License Version 3 (the ``LGPL''),
@@ -26,36 +26,28 @@
 
 #pragma once
 
-#include "LoggingSystem.h"
+#include <string>
+
+#include "ConsoleLogger.h"
+
 #include "rsc/rscexports.h"
 
 namespace rsc {
 namespace logging {
 
 /**
- * Default logging system using the console for output.
- *
- * @author jwienke
+ * @author jmoringe
  */
-class RSC_EXPORT ConsoleLoggingSystem: public LoggingSystem {
+class RSC_EXPORT SGRConsoleLogger: public ConsoleLogger {
 public:
 
-    ConsoleLoggingSystem();
-    virtual ~ConsoleLoggingSystem();
+    SGRConsoleLogger(const std::string& name);
 
-    std::string getRegistryKey() const;
+    virtual ~SGRConsoleLogger();
 
-    LoggerPtr createLogger(const std::string& name);
+protected:
 
-    static std::string getName();
-
-private:
-
-    /*
-     * True when SGRConsoleLoggers should be used. Usually initialized
-     * by calling isatty(2).
-     */
-    bool canUseSGRs;
+    std::ostream& printHeader(std::ostream& stream, const Level& level);
 
 };
 
