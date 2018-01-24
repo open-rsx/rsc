@@ -49,6 +49,10 @@ protected:
 
     std::ostream& printHeader(std::ostream& stream, const Level& level);
 
+    std::ostream& printBody(std::ostream&      stream,
+                            const Level&       level,
+                            const std::string& msg);
+
 };
 
 }

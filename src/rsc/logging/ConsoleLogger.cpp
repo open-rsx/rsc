@@ -70,11 +70,17 @@ ostream& ConsoleLogger::printHeader(ostream& stream, const Level& level) {
             << " [" << level << "]: ";
 }
 
+std::ostream& ConsoleLogger::printBody(std::ostream&      stream,
+                                       const Level&       level,
+                                       const std::string& msg) {
+    return stream << msg << endl;
+}
+
 void ConsoleLogger::log(const Level& level, const string& msg) {
     boost::recursive_mutex::scoped_lock lock(mutex);
     if (isEnabledFor(level)) {
-        printHeader(cerr, level);
-        cerr << msg << endl;
+        std::ostream& stream = printHeader(cerr, level);
+        printBody(stream, level, msg);
     }
 }
 

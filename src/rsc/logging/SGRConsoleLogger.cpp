@@ -44,5 +44,28 @@ std::ostream& SGRConsoleLogger::printHeader(std::ostream& stream, const Level& l
             << " [31m[" << level << "][0m: ");
 }
 
+std::ostream& SGRConsoleLogger::printBody(std::ostream&      stream,
+                                          const Level&       level,
+                                          const std::string& msg) {
+    switch (level) {
+    case LEVEL_TRACE:
+    case LEVEL_DEBUG:
+        return stream << "[2m" << msg << "[0m" << std::endl;
+        break;
+    case LEVEL_WARN:
+        return stream << "[32m" << msg << "[0m" << std::endl;
+        break;
+    case LEVEL_ERROR:
+        return stream << "[31m" << msg << "[0m" << std::endl;
+        break;
+    case LEVEL_FATAL:
+        return stream << "[31;1m" << msg << "[0m" << std::endl;
+        break;
+    default:
+        return stream << msg << std::endl;
+        break;
+    }
+}
+
 }
 }

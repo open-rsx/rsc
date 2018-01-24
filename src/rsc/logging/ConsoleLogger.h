@@ -73,6 +73,20 @@ protected:
      */
     virtual std::ostream& printHeader(std::ostream& stream, const Level& level);
 
+    /**
+     * Print the @a msg as the body of the log message.
+     *
+     * Acquire the lock before calling this method.
+     *
+     * @param stream Stream to print to
+     * @param level The level of the log message
+     * @param msg The body string of the log message
+     * @return @a stream
+     */
+    virtual std::ostream& printBody(std::ostream&      stream,
+                                    const Level&       level,
+                                    const std::string& msg);
+
     std::string                    name;
     Level                          level;
 
