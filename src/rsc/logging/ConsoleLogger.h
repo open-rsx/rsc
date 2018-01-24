@@ -50,8 +50,7 @@ public:
      *
      * @param name name of the logger
      */
-    ConsoleLogger(const std::string& name);
-    ConsoleLogger(const std::string& name, const Level& level);
+    ConsoleLogger(const std::string& name, const Level& level = LEVEL_INFO);
     virtual ~ConsoleLogger();
 
     Level getLevel() const;

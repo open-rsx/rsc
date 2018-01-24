@@ -34,10 +34,6 @@ using namespace std;
 namespace rsc {
 namespace logging {
 
-ConsoleLogger::ConsoleLogger(const string& name) :
-    name(name), level(LEVEL_INFO) {
-}
-
 ConsoleLogger::ConsoleLogger(const string& name, const Level& level) :
     name(name), level(level) {
 }
