@@ -67,7 +67,7 @@ ostream& ConsoleLogger::printHeader(ostream& stream, const Level& level) {
 }
 
 std::ostream& ConsoleLogger::printBody(std::ostream&      stream,
-                                       const Level&       level,
+                                       const Level&       /*level*/,
                                        const std::string& msg) {
     return stream << msg << endl;
 }
