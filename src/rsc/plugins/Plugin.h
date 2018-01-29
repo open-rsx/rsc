@@ -2,7 +2,7 @@
  *
  * This file is part of the RSC project.
  *
- * Copyright (C) 2012, 2014 Jan Moringen <jmoringe@techfak.uni-bielefeld.de>
+ * Copyright (C) 2012-2018 Jan Moringen <jmoringe@techfak.uni-bielefeld.de>
  *
  * This file may be licensed under the terms of the
  * GNU Lesser General Public License Version 3 (the ``LGPL''),
@@ -83,6 +83,19 @@ public:
      *                      reason.
      */
     void unload(bool wrapExceptions = true);
+
+    /**
+     * Tries to load the plugin unless it is already loaded.
+     *
+     * @param wrapExceptions If @c true, exceptions thrown in the init
+     *                       method of the plugin are wrapped in a
+     *                       runtime_error exception.
+     * @return @c false if the plugin was already loaded. @c true
+     *         otherwise.
+     * @throw runtime_error If the plugin cannot be loaded for some
+     *                      reason.
+     */
+    bool ensureLoaded(bool wrapExceptions = true);
 
     /**
      * Returns the path to the library implementing this plugin.

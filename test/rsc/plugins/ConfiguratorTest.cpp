@@ -70,7 +70,7 @@ TEST_F(ConfiguratorTest, testListOfPluginsWithPreviousValue) {
     c.handleOption(loadOption, "testplugin:testplugin");
     c.handleOption(loadOption, "testplugin::");
 
-    EXPECT_THROW(c.execute(false), runtime_error);
+    c.execute();
 
 }
 

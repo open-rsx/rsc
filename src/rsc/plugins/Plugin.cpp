@@ -2,7 +2,7 @@
  *
  * This file is part of the RSC project.
  *
- * Copyright (C) 2012, 2014 Jan Moringen <jmoringe@techfak.uni-bielefeld.de>
+ * Copyright (C) 2012-2018 Jan Moringen <jmoringe@techfak.uni-bielefeld.de>
  *
  * This file may be licensed under the terms of the
  * GNU Lesser General Public License Version 3 (the ``LGPL''),
@@ -142,6 +142,14 @@ public:
             this->shutdown();
         }
     }
+
+    bool ensureLoaded(bool wrapExceptions) {
+        if (this->loaded) {
+            return false;
+        }
+        load(wrapExceptions);
+        return true;
+    }
 private:
     typedef void (*InitFunction)();
     typedef void (*ShutdownFunction)();
@@ -222,6 +230,10 @@ void Plugin::load(bool wrapExceptions) {
 
 void Plugin::unload(bool wrapExceptions) {
     this->impl->unload(wrapExceptions);
+}
+
+bool Plugin::ensureLoaded(bool wrapExceptions) {
+    return this->impl->ensureLoaded(wrapExceptions);
 }
 
 string Plugin::getLibrary() const {

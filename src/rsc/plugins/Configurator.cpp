@@ -2,7 +2,7 @@
  *
  * This file is part of the RSC project.
  *
- * Copyright (C) 2012, 2014, 2016 Jan Moringen <jmoringe@techfak.uni-bielefeld.de>
+ * Copyright (C) 2012-2018 Jan Moringen <jmoringe@techfak.uni-bielefeld.de>
  *
  * This file may be licensed under the terms of the
  * GNU Lesser General Public License Version 3 (the ``LGPL''),
@@ -147,7 +147,7 @@ void Configurator::loadPlugins(const vector<string>& names,
              it != matches.end(); ++it) {
             RSCDEBUG(this->logger, "Loading plugin " << (*it)->getName());
             try {
-                (*it)->load();
+                (*it)->ensureLoaded();
             } catch (const std::exception& e) {
                 throw runtime_error(str(format("Failed to load plugin `%1%' as requested via configuration: %2%")
                                         % (*it)->getName()
