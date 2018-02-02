@@ -2,7 +2,7 @@
  *
  * This file is part of the RSC project
  *
- * Copyright (C) 2010-2016 Jan Moringen
+ * Copyright (C) 2010-2018 Jan Moringen
  *
  * This file may be licensed under the terms of the
  * GNU Lesser General Public License Version 3 (the ``LGPL''),
@@ -139,20 +139,19 @@ public:
     T getAs(const std::string& name, const T& default_) const;
 
     /**
-     * Sets a new property in the map. If a property with this name exits, the
-     * new one will not be inserted. The old property has to be removed first.
+     * Sets a new property in the map.
+     *
+     * If a property with this name exits, the old value is overwritten.
+     *
      * The property will be stored with type @c Target.
      *
-     * @param name name of the property to set
-     * @param value value to set
-     * @return @c true if the property was inserted, @c false if a property with
-     *         the given name existed and nothing was changed
+     * @param name Name of the property to set.
+     * @param value Value to set.
      *
      * usage: props.set<unsigned int>("port", 22);
      */
     template<typename Target, typename T>
-    bool
-    set(const std::string& name, const T& value) throw ();
+    Properties& set(const std::string& name, const T& value) throw ();
 };
 
 /**
@@ -240,9 +239,9 @@ T Properties::getAs(const std::string& name, const T& default_) const {
 }
 
 template<typename Target, typename T>
-bool Properties::set(const std::string& name, const T& value) throw () {
-    erase(name);
-    return insert(std::make_pair(name, static_cast<Target> (value))).second;
+Properties& Properties::set(const std::string& name, const T& value) throw () {
+    insert(std::make_pair(name, static_cast<Target> (value)));
+    return *this;
 }
 
 // free function implementations
