@@ -3,6 +3,7 @@
  * This file is a part of RSC project
  *
  * Copyright (C) 2010 by Johannes Wienke <jwienke at techfak dot uni-bielefeld dot de>
+ * Copyright (C) 2018 Jan Moringen <jmoringe@techfak.uni-bielefeld.de>
  *
  * This file may be licensed under the terms of the
  * GNU Lesser General Public License Version 3 (the ``LGPL''),
@@ -26,19 +27,15 @@
 
 #pragma once
 
-#include <map>
-#include <vector>
-
-#include <boost/noncopyable.hpp>
 #include <boost/thread/recursive_mutex.hpp>
-#include <boost/shared_ptr.hpp>
+
+#include "../patterns/Singleton.h"
 
 #include "Logger.h"
 #include "LoggerTreeNode.h"
 #include "LoggerProxy.h"
 #include "LoggingSystem.h"
-#include "../patterns/Singleton.h"
-#include "../misc/langutils.h"
+
 #include "rsc/rscexports.h"
 
 namespace rsc {
@@ -173,7 +170,7 @@ private:
     LoggerProxyPtr createLogger(const LoggerTreeNode::NamePath& path,
             LoggerTreeNodePtr node);
 
-    boost::shared_ptr<LoggingSystem> loggingSystem;
+    LoggingSystemPtr loggingSystem;
 
     boost::recursive_mutex mutex;
     LoggerTreeNodePtr loggerTree;

@@ -3,6 +3,7 @@
  * This file is a part of RSC project
  *
  * Copyright (C) 2010 by Johannes Wienke <jwienke at techfak dot uni-bielefeld dot de>
+ * Copyright (C) 2018 Jan Moringen <jmoringe@techfak.uni-bielefeld.de>
  *
  * This file may be licensed under the terms of the
  * GNU Lesser General Public License Version 3 (the ``LGPL''),
@@ -26,7 +27,10 @@
 
 #pragma once
 
+#include <string>
+
 #include "LoggingSystem.h"
+
 #include "rsc/rscexports.h"
 
 namespace rsc {

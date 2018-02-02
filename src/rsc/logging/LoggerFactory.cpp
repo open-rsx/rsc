@@ -3,6 +3,7 @@
  * This file is a part of RSC project
  *
  * Copyright (C) 2010 by Johannes Wienke <jwienke at techfak dot uni-bielefeld dot de>
+ * Copyright (C) 2018 Jan Moringen <jmoringe@techfak.uni-bielefeld.de>
  *
  * This file may be licensed under the terms of the
  * GNU Lesser General Public License Version 3 (the ``LGPL''),
@@ -26,23 +27,19 @@
 
 #include "LoggerFactory.h"
 
-#include <vector>
-
 #include <boost/bind.hpp>
-#include <boost/enable_shared_from_this.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include <boost/format.hpp>
-#include <boost/function.hpp>
 #include <boost/algorithm/string.hpp>
+
+#include "../runtime/ContainerIO.h"
+#include "../config/ConfigFileSource.h"
 
 #include "ConsoleLoggingSystem.h"
 #include "LoggerProxy.h"
 #include "OptionBasedConfigurator.h"
-#include "../config/ConfigFileSource.h"
-#include "../runtime/ContainerIO.h"
 
 using namespace std;
-using namespace rsc::misc;
 
 namespace rsc {
 namespace logging {
