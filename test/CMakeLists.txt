@@ -26,14 +26,6 @@ configure_file(testconfig.h.in ${CMAKE_CURRENT_BINARY_DIR}/testconfig.h)
 
 # --- library test ---
 
-set(REGISTRY_TEST_LIB_NAME "registry")
-add_library(${REGISTRY_TEST_LIB_NAME} SHARED "rsc/misc/testRegistry.cpp" "rsc/misc/testRegistry.h")
-target_link_libraries(${REGISTRY_TEST_LIB_NAME} ${RSC_NAME})
-
-set(REGISTREE_TEST_LIB_NAME "registree")
-add_library(${REGISTREE_TEST_LIB_NAME} SHARED "rsc/misc/RegistreeLib.cpp" "rsc/misc/RegistreeLib.h")
-target_link_libraries(${REGISTREE_TEST_LIB_NAME} ${REGISTRY_TEST_LIB_NAME})
-
 file(GLOB TEST_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
                        "rsc/debug/*.cpp"
                        "rsc/logging/*.cpp"
@@ -44,7 +36,7 @@ file(GLOB TEST_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
                        "rsc/patterns/*.cpp"
                        "rsc/os/*.cpp")
 set(TEST_SOURCES ${TEST_SOURCES} "rsc/RscTestSuite.cpp")
-list(APPEND TEST_SOURCES "rsc/misc/UUIDTest.cpp" "rsc/misc/RegistryTest.cpp" "rsc/misc/langutilsTest.cpp")
+list(APPEND TEST_SOURCES "rsc/misc/UUIDTest.cpp" "rsc/misc/langutilsTest.cpp")
 list(APPEND TEST_SOURCES "rsc/plugins/ConfiguratorTest.cpp"
                          "rsc/plugins/PluginTest.cpp")
 
@@ -57,8 +49,6 @@ endif()
 
 add_executable(${RSC_TEST_NAME} ${TEST_SOURCES})
 target_link_libraries(${RSC_TEST_NAME}
-                      ${REGISTRY_TEST_LIB_NAME}
-                      ${REGISTREE_TEST_LIB_NAME}
                       ${RSC_NAME}
                       ${GMOCK_LIBRARIES})
 
