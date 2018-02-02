@@ -25,7 +25,7 @@ set(CPACK_GENERATOR "DEB")
 
 set(CPACK_DEBIAN_PACKAGE_NAME        "lib${RSC_NAME}")
 set(CPACK_DEBIAN_PACKAGE_VERSION     "${CPACK_PACKAGE_VERSION}${CPACK_PACKAGE_REVISION}")
-set(CPACK_DEBIAN_PACKAGE_MAINTAINER  "Sebastian Wrede <swrede@techfak.uni-bielefeld.de>")
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER  "Jan Moringen <jmoringe@techfak.uni-bielefeld.de>")
 set(CPACK_DEBIAN_PACKAGE_DESCRIPTION "Library of reusable C++ and CMake code.
  RSC is a project focused on all aspects of reusable library functions
  in robotics systems. RSC is meant to improve the C++ std lib for
