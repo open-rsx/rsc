@@ -65,7 +65,7 @@ set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${SHLIBS_FILE};${POSTINST_SCRIPT};${POST
 
 # Write license file
 file(WRITE "${CMAKE_BINARY_DIR}/copyright"
-     "Copyright (C) 2010-2012 ${CPACK_DEBIAN_PACKAGE_MAINTAINER}
+     "Copyright (C) 2010-2018 ${CPACK_DEBIAN_PACKAGE_MAINTAINER}
 
    This software may be licensed under the terms of the
    GNU Lesser General Public License Version 3 (the ``LGPL''),
