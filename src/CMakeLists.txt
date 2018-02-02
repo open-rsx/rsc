@@ -1,31 +1,31 @@
 # --- library ---
 
-IF(INIT_METHOD_ATTRIBUTE_CONSTRUCTOR)
-    SET(INIT_METHOD_NAME RSC_HAVE_INIT_METHOD_ATTRIBUTE_CONSTRUCTOR)
-ELSEIF(INIT_METHOD_CRT)
-    SET(INIT_METHOD_NAME RSC_HAVE_INIT_METHOD_CRT)
-ELSE()
-    SET(INIT_METHOD_NAME RSC_HAVE_NO_INIT_METHOD_ERROR)
-ENDIF()
-STRING(REPLACE "." "_" RSC_EXPORTS_NAME ${RSC_NAME})
-CONFIGURE_FILE(rsc/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/rsc/config.h @ONLY)
-INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/rsc/config.h DESTINATION "include/${INSTALL_PATH_PREFIX}/rsc")
+if(INIT_METHOD_ATTRIBUTE_CONSTRUCTOR)
+    set(INIT_METHOD_NAME RSC_HAVE_INIT_METHOD_ATTRIBUTE_CONSTRUCTOR)
+elseif(INIT_METHOD_CRT)
+    set(INIT_METHOD_NAME RSC_HAVE_INIT_METHOD_CRT)
+else()
+    set(INIT_METHOD_NAME RSC_HAVE_NO_INIT_METHOD_ERROR)
+endif()
+string(REPLACE "." "_" RSC_EXPORTS_NAME ${RSC_NAME})
+configure_file(rsc/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/rsc/config.h @ONLY)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/rsc/config.h DESTINATION "include/${INSTALL_PATH_PREFIX}/rsc")
 
-CONFIGURE_FILE(rsc/rscexports.h.in ${CMAKE_CURRENT_BINARY_DIR}/rsc/rscexports.h @ONLY)
-INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/rsc/rscexports.h DESTINATION "include/${INSTALL_PATH_PREFIX}/rsc")
+configure_file(rsc/rscexports.h.in ${CMAKE_CURRENT_BINARY_DIR}/rsc/rscexports.h @ONLY)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/rsc/rscexports.h DESTINATION "include/${INSTALL_PATH_PREFIX}/rsc")
 
 # version stuff
-INCLUDE(PadString)
-PAD_STRING(MAJOR_PADDED 2 "0" ${RSC_VERSION_MAJOR})
-PAD_STRING(MINOR_PADDED 2 "0" ${RSC_VERSION_MINOR})
-PAD_STRING(PATCH_PADDED 2 "0" ${RSC_VERSION_PATCH})
-SET(RSC_VERSION_NUMERIC "${MAJOR_PADDED}${MINOR_PADDED}${PATCH_PADDED}")
-CONFIGURE_FILE(rsc/Version.cpp.in "${CMAKE_CURRENT_BINARY_DIR}/rsc/Version.cpp" @ONLY)
-CONFIGURE_FILE(rsc/Version.h.in "${CMAKE_CURRENT_BINARY_DIR}/rsc/Version.h" @ONLY)
+include(PadString)
+pad_string(MAJOR_PADDED 2 "0" ${RSC_VERSION_MAJOR})
+pad_string(MINOR_PADDED 2 "0" ${RSC_VERSION_MINOR})
+pad_string(PATCH_PADDED 2 "0" ${RSC_VERSION_PATCH})
+set(RSC_VERSION_NUMERIC "${MAJOR_PADDED}${MINOR_PADDED}${PATCH_PADDED}")
+configure_file(rsc/Version.cpp.in "${CMAKE_CURRENT_BINARY_DIR}/rsc/Version.cpp" @ONLY)
+configure_file(rsc/Version.h.in "${CMAKE_CURRENT_BINARY_DIR}/rsc/Version.h" @ONLY)
 
-INCLUDE_DIRECTORIES(BEFORE ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/rsc)
+include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/rsc)
 
-FILE(GLOB SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+file(GLOB SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
                   "rsc/logging/*.cpp"
                   "rsc/config/*.cpp"
                   "rsc/math/*.cpp"
@@ -33,7 +33,7 @@ FILE(GLOB SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
                   "rsc/patterns/*.cpp"
                   "rsc/threading/*.cpp"
                   "rsc/plugins/*.cpp")
-SET(SOURCES ${SOURCES}
+set(SOURCES ${SOURCES}
             rsc/subprocess/Subprocess.cpp
 
             rsc/debug/DebugTools.cpp
@@ -45,7 +45,7 @@ SET(SOURCES ${SOURCES}
 
             "${CMAKE_CURRENT_BINARY_DIR}/rsc/Version.cpp")
 
-FILE(GLOB HEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+file(GLOB HEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
                   "rsc/logging/*.h"
                   "rsc/config/*.h"
                   "rsc/math/*.h"
@@ -56,7 +56,7 @@ FILE(GLOB HEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
                   "rsc/threading/*.h"
                   "rsc/plugins/*.h"
                   "rsc/os/*.h")
-SET(HEADERS ${HEADERS}
+set(HEADERS ${HEADERS}
             rsc/debug/DebugTools.h
             rsc/subprocess/Subprocess.h
             ${CMAKE_CURRENT_BINARY_DIR}/rsc/Version.h
@@ -64,120 +64,120 @@ SET(HEADERS ${HEADERS}
             ${CMAKE_CURRENT_BINARY_DIR}/rsc/rscexports.h)
 
 # Platform-specific backend choices
-MESSAGE(STATUS "Selecting platform-specific backends")
-IF(CMAKE_SYSTEM_NAME STREQUAL Linux)
-    MESSAGE(STATUS "  UnixSubprocess")
-    LIST(APPEND SOURCES rsc/subprocess/UnixSubprocess.cpp)
-    LIST(APPEND HEADERS rsc/subprocess/UnixSubprocess.h)
-    ADD_DEFINITIONS(-DSUBPROCESS_UNIX)
+message(STATUS "Selecting platform-specific backends")
+if(CMAKE_SYSTEM_NAME STREQUAL Linux)
+    message(STATUS "  UnixSubprocess")
+    list(APPEND SOURCES rsc/subprocess/UnixSubprocess.cpp)
+    list(APPEND HEADERS rsc/subprocess/UnixSubprocess.h)
+    add_definitions(-DSUBPROCESS_UNIX)
 
-    MESSAGE(STATUS "  LinuxDebugTools")
-    LIST(APPEND SOURCES rsc/debug/LinuxDebugTools.cpp)
-    LIST(APPEND HEADERS rsc/debug/LinuxDebugTools.h)
-    ADD_DEFINITIONS(-DDEBUGTOOLS_LINUX)
+    message(STATUS "  LinuxDebugTools")
+    list(APPEND SOURCES rsc/debug/LinuxDebugTools.cpp)
+    list(APPEND HEADERS rsc/debug/LinuxDebugTools.h)
+    add_definitions(-DDEBUGTOOLS_LINUX)
 
-    MESSAGE(STATUS "  PosixSignalWaiter")
-    LIST(APPEND SOURCES rsc/misc/PosixSignalWaiter.cpp)
+    message(STATUS "  PosixSignalWaiter")
+    list(APPEND SOURCES rsc/misc/PosixSignalWaiter.cpp)
 
-    MESSAGE(STATUS "  LinuxProcessInfo")
-    LIST(APPEND SOURCES rsc/os/LinuxProcessInfo.cpp)
+    message(STATUS "  LinuxProcessInfo")
+    list(APPEND SOURCES rsc/os/LinuxProcessInfo.cpp)
 
-    MESSAGE(STATUS "  LinuxHostInfo")
-    LIST(APPEND SOURCES rsc/os/LinuxHostInfo.cpp
+    message(STATUS "  LinuxHostInfo")
+    list(APPEND SOURCES rsc/os/LinuxHostInfo.cpp
                         rsc/os/PosixUtilities.cpp)
 
-ELSEIF(APPLE)
+elseif(APPLE)
 
-    MESSAGE(STATUS "  UnixSubprocess")
-    LIST(APPEND SOURCES rsc/subprocess/UnixSubprocess.cpp)
-    LIST(APPEND HEADERS rsc/subprocess/UnixSubprocess.h)
-    ADD_DEFINITIONS(-DSUBPROCESS_UNIX)
+    message(STATUS "  UnixSubprocess")
+    list(APPEND SOURCES rsc/subprocess/UnixSubprocess.cpp)
+    list(APPEND HEADERS rsc/subprocess/UnixSubprocess.h)
+    add_definitions(-DSUBPROCESS_UNIX)
 
-    MESSAGE(STATUS "  LinuxDebugTools")
-    LIST(APPEND SOURCES rsc/debug/LinuxDebugTools.cpp)
-    LIST(APPEND HEADERS rsc/debug/LinuxDebugTools.h)
-    ADD_DEFINITIONS(-DDEBUGTOOLS_LINUX)
+    message(STATUS "  LinuxDebugTools")
+    list(APPEND SOURCES rsc/debug/LinuxDebugTools.cpp)
+    list(APPEND HEADERS rsc/debug/LinuxDebugTools.h)
+    add_definitions(-DDEBUGTOOLS_LINUX)
 
-    MESSAGE(STATUS "  MacSignalWaiter")
-    LIST(APPEND SOURCES rsc/misc/MacSignalWaiter.cpp)
+    message(STATUS "  MacSignalWaiter")
+    list(APPEND SOURCES rsc/misc/MacSignalWaiter.cpp)
 
-    MESSAGE(STATUS "  MacProcessInfo")
-    LIST(APPEND SOURCES rsc/os/MacProcessInfo.cpp)
+    message(STATUS "  MacProcessInfo")
+    list(APPEND SOURCES rsc/os/MacProcessInfo.cpp)
 
-    MESSAGE(STATUS "  MacHostInfo")
-    LIST(APPEND SOURCES rsc/os/MacHostInfo.cpp
+    message(STATUS "  MacHostInfo")
+    list(APPEND SOURCES rsc/os/MacHostInfo.cpp
                         rsc/os/PosixUtilities.cpp)
 
 
-ELSEIF(UNIX)
-    MESSAGE(STATUS "  UnixSubprocess")
-    LIST(APPEND SOURCES rsc/subprocess/UnixSubprocess.cpp)
-    LIST(APPEND HEADERS rsc/subprocess/UnixSubprocess.h)
-    ADD_DEFINITIONS(-DSUBPROCESS_UNIX)
+elseif(UNIX)
+    message(STATUS "  UnixSubprocess")
+    list(APPEND SOURCES rsc/subprocess/UnixSubprocess.cpp)
+    list(APPEND HEADERS rsc/subprocess/UnixSubprocess.h)
+    add_definitions(-DSUBPROCESS_UNIX)
 
-    MESSAGE(STATUS "  LinuxDebugTools")
-    LIST(APPEND SOURCES rsc/debug/LinuxDebugTools.cpp)
-    LIST(APPEND HEADERS rsc/debug/LinuxDebugTools.h)
-    ADD_DEFINITIONS(-DDEBUGTOOLS_LINUX)
+    message(STATUS "  LinuxDebugTools")
+    list(APPEND SOURCES rsc/debug/LinuxDebugTools.cpp)
+    list(APPEND HEADERS rsc/debug/LinuxDebugTools.h)
+    add_definitions(-DDEBUGTOOLS_LINUX)
 
-    MESSAGE(STATUS "  PosixSignalWaiter")
-    LIST(APPEND SOURCES rsc/misc/PosixSignalWaiter.cpp)
+    message(STATUS "  PosixSignalWaiter")
+    list(APPEND SOURCES rsc/misc/PosixSignalWaiter.cpp)
 
-    MESSAGE(STATUS "  PosixProcessInfo")
-    LIST(APPEND SOURCES rsc/os/PosixProcessInfo.cpp)
+    message(STATUS "  PosixProcessInfo")
+    list(APPEND SOURCES rsc/os/PosixProcessInfo.cpp)
 
-    MESSAGE(STATUS "  PosixHostInfo")
-    LIST(APPEND SOURCES rsc/os/PosixHostInfo.cpp
+    message(STATUS "  PosixHostInfo")
+    list(APPEND SOURCES rsc/os/PosixHostInfo.cpp
                         rsc/os/PosixUtilities.cpp)
 
-ELSEIF(WIN32)
-    MESSAGE(STATUS "  WindowsSubprocess")
-    LIST(APPEND SOURCES rsc/subprocess/WindowsSubprocess.cpp)
-    LIST(APPEND HEADERS rsc/subprocess/WindowsSubprocess.h)
-    ADD_DEFINITIONS(-DSUBPROCESS_WINDOWS)
+elseif(WIN32)
+    message(STATUS "  WindowsSubprocess")
+    list(APPEND SOURCES rsc/subprocess/WindowsSubprocess.cpp)
+    list(APPEND HEADERS rsc/subprocess/WindowsSubprocess.h)
+    add_definitions(-DSUBPROCESS_WINDOWS)
 
-    MESSAGE(STATUS "  WindowsDebugTools")
-    LIST(APPEND SOURCES rsc/debug/WindowsDebugTools.cpp)
-    LIST(APPEND HEADERS rsc/debug/WindowsDebugTools.h)
-    ADD_DEFINITIONS(-DDEBUGTOOLS_WINDOWS)
+    message(STATUS "  WindowsDebugTools")
+    list(APPEND SOURCES rsc/debug/WindowsDebugTools.cpp)
+    list(APPEND HEADERS rsc/debug/WindowsDebugTools.h)
+    add_definitions(-DDEBUGTOOLS_WINDOWS)
 
-    MESSAGE(STATUS "  Win32SignalWaiter")
-    LIST(APPEND SOURCES rsc/misc/Win32SignalWaiter.cpp)
+    message(STATUS "  Win32SignalWaiter")
+    list(APPEND SOURCES rsc/misc/Win32SignalWaiter.cpp)
 
-	LIST(APPEND HEADERS rsc/os/Win32Common.h)
-	LIST(APPEND SOURCES rsc/os/Win32Common.cpp)
+	list(APPEND HEADERS rsc/os/Win32Common.h)
+	list(APPEND SOURCES rsc/os/Win32Common.cpp)
 
-    MESSAGE(STATUS "  Win32ProcessInfo")
-    LIST(APPEND SOURCES rsc/os/Win32ProcessInfo.cpp)
+    message(STATUS "  Win32ProcessInfo")
+    list(APPEND SOURCES rsc/os/Win32ProcessInfo.cpp)
 
-    MESSAGE(STATUS "  Win32HostInfo")
-    LIST(APPEND SOURCES rsc/os/Win32HostInfo.cpp)
+    message(STATUS "  Win32HostInfo")
+    list(APPEND SOURCES rsc/os/Win32HostInfo.cpp)
 
-ELSE()
-    MESSAGE(FATAL_ERROR "No Subprocess, DebugTools, ProcessInfo or HostInfo implementation is available for this platform")
-ENDIF()
+else()
+    message(FATAL_ERROR "No Subprocess, DebugTools, ProcessInfo or HostInfo implementation is available for this platform")
+endif()
 
-ADD_LIBRARY(${RSC_NAME} SHARED ${SOURCES} ${HEADERS})
-TARGET_LINK_LIBRARIES(${RSC_NAME} ${Boost_LIBRARIES}
+add_library(${RSC_NAME} SHARED ${SOURCES} ${HEADERS})
+target_link_libraries(${RSC_NAME} ${Boost_LIBRARIES}
                                   ${CMAKE_THREAD_LIBS_INIT})
 # System libraries for dynamic loading (required by plugin system)
-IF(UNIX)
-    TARGET_LINK_LIBRARIES(${RSC_NAME} dl)
-ENDIF()
+if(UNIX)
+    target_link_libraries(${RSC_NAME} dl)
+endif()
 # Windows-specific libraries
-IF(WIN32)
-    TARGET_LINK_LIBRARIES(${RSC_NAME} Secur32 Psapi)
-ENDIF()
-SET_TARGET_PROPERTIES(${RSC_NAME}
+if(WIN32)
+    target_link_libraries(${RSC_NAME} Secur32 Psapi)
+endif()
+set_target_properties(${RSC_NAME}
                       PROPERTIES
                       VERSION ${SO_VERSION})
 
-INSTALL(TARGETS ${RSC_NAME}
+install(TARGETS ${RSC_NAME}
         EXPORT RSCDepends
         RUNTIME DESTINATION bin
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib)
-INSTALL_FILES_RECURSIVE("include/${INSTALL_PATH_PREFIX}" HEADERS)
+install_files_recursive("include/${INSTALL_PATH_PREFIX}" HEADERS)
 
-INCLUDE(InstallDebugSymbols)
-INSTALL_DEBUG_SYMBOLS(TARGETS ${RSC_NAME})
+include(InstallDebugSymbols)
+install_debug_symbols(TARGETS ${RSC_NAME})

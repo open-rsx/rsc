@@ -1,7 +1,7 @@
-SET(CMAKE_MODULE_PATH "${RSC_CMAKE_MODULE_PATH}")
-MESSAGE(STATUS "Installing CMake modules to: ${CMAKE_MODULE_PATH}")
+set(CMAKE_MODULE_PATH "${RSC_CMAKE_MODULE_PATH}")
+message(STATUS "Installing CMake modules to: ${CMAKE_MODULE_PATH}")
 
-INSTALL(FILES ExtractTBBVersion.cpp.in
+install(FILES ExtractTBBVersion.cpp.in
               ExtractSpreadVersion.cpp.in
               TestAttributeConstructor.cpp
               TestCRTInit.cpp

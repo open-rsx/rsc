@@ -1,2 +1,2 @@
-ADD_SUBDIRECTORY(Modules)
-ADD_SUBDIRECTORY(Toolchains)
+add_subdirectory(Modules)
+add_subdirectory(Toolchains)
