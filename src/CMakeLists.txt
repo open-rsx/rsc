@@ -144,8 +144,8 @@ elseif(WIN32)
     message(STATUS "  Win32SignalWaiter")
     list(APPEND SOURCES rsc/misc/Win32SignalWaiter.cpp)
 
-	list(APPEND HEADERS rsc/os/Win32Common.h)
-	list(APPEND SOURCES rsc/os/Win32Common.cpp)
+    list(APPEND HEADERS rsc/os/Win32Common.h)
+    list(APPEND SOURCES rsc/os/Win32Common.cpp)
 
     message(STATUS "  Win32ProcessInfo")
     list(APPEND SOURCES rsc/os/Win32ProcessInfo.cpp)
