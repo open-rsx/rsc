@@ -31,7 +31,7 @@
 #include <algorithm>
 #include <iterator>
 
-#ifndef WIN32
+#ifndef _WIN32
 #include <sys/time.h>
 #else
 #include <windows.h>
@@ -44,7 +44,7 @@ namespace misc {
 void NullDeleter::operator()(void* /*ignored*/) const {
 }
 
-#ifdef WIN32
+#ifdef _WIN32
 
 boost::uint64_t windowsTime() {
 
@@ -63,7 +63,7 @@ boost::uint64_t windowsTime() {
 
 boost::uint64_t currentTimeMillis() {
 
-#ifdef WIN32
+#ifdef _WIN32
 
     return windowsTime() / 10000; // scale to millis.
 
@@ -81,7 +81,7 @@ boost::uint64_t currentTimeMillis() {
 
 boost::uint64_t currentTimeMicros() {
 
-#ifdef WIN32
+#ifdef _WIN32
 
     return windowsTime() / 10;
 
