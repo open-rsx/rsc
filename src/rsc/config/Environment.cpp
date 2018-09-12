@@ -2,7 +2,7 @@
  *
  * This file is part of the RSC project
  *
- * Copyright (C) 2011-2016 Jan Moringen
+ * Copyright (C) 2011-2018 Jan Moringen
  *
  * This file may be licensed under the terms of the
  * GNU Lesser General Public License Version 3 (the ``LGPL''),
@@ -54,7 +54,7 @@ namespace rsc {
 namespace config {
 
 path systemConfigDirectory() {
-#ifndef WIN32
+#ifndef _WIN32
     return "/etc/";
 #else
     return "c:\\";
@@ -62,7 +62,7 @@ path systemConfigDirectory() {
 }
 
 path prefixConfigDirectory(const path& prefix) {
-#ifndef WIN32
+#ifndef _WIN32
     // The "common" rule in the "else" leg would lead to "/usr/etc",
     // which does not normally exist. Therefore, we treat the "/usr"
     // prefix specially.
@@ -77,7 +77,7 @@ path prefixConfigDirectory(const path& prefix) {
 }
 
 path userHomeDirectory() {
-#ifndef WIN32
+#ifndef _WIN32
     char* rawHome = getenv("HOME");
     if (!rawHome) {
         throw runtime_error("Home directory not defined in HOME variable.");
