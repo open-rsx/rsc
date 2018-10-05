@@ -1,9 +1,4 @@
-# -*- mode: cmake -*-
-
-cmake_minimum_required(VERSION 2.6)
-set(CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS TRUE)
-
-project("RSC")
+cmake_minimum_required(VERSION 3.0)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules)
 
@@ -29,6 +24,9 @@ option(ENCODE_VERSION "If set to ON, install paths and library name will have th
 
 set(VERSION_MAJOR "0" CACHE STRING "Major project version part")
 set(VERSION_MINOR "19" CACHE STRING "Minor project version part")
+
+project("RSC" VERSION "${VERSION_MAJOR}.${VERSION_MINOR}"
+              LANGUAGES C CXX)
 
 define_project_version(RSC_ ${VERSION_MAJOR} ${VERSION_MINOR} 0 "archive")
 current_date(RSC_BUILD_DATE)
