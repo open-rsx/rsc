@@ -19,8 +19,47 @@ addons:
       - make
       - unzip
 script:
+  - mkdir -p build && cd build
+  - cmake -DCMAKE_INSTALL_PREFIX=/rsc ..
+  - make
+  - make test
+  - make DESTDIR=install_dir install
+  - tar -C install_dir -czf "rsc-${CC}.tar.gz" rsc
   - |
-      mkdir -p build && cd build
-      cmake ..
-      make
-      make test
+    cat << EOF > bintray.json
+    {
+      "package": {
+        "name": "rsc",
+        "repo": "travis-artifacts",
+        "subject": "open-rsx",
+        "desc": "Travis artifact for branch ${TRAVIS_BRANCH}",
+        "vcs_url": "https://github.com/open-rsx/rsc.git",
+        "licenses": ["LGPL-3.0"]
+      },
+
+      "version": {
+        "name": "travis-${TRAVIS_BRANCH}",
+        "vcs_tag": "${TRAVIS_BRANCH}"
+      },
+
+      "files": [
+        {
+          "includePattern": "\./(rsc-.*).tar.gz",
+          "uploadPattern": "\$1-${TRAVIS_BRANCH}.tar.gz",
+          "matrixParams": {
+            "override": 1
+          }
+        }
+      ],
+      "publish": true
+    }
+    EOF
+deploy:
+  provider: bintray
+  file: "bintray.json"
+  user: "languitar"
+  key: '${BINTRAY_KEY}'
+  skip_cleanup: true
+  on:
+    repo: open-rsx/rsc
+    all_branches: true
