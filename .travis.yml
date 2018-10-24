@@ -16,50 +16,68 @@ addons:
       - libboost-signals-dev
       - libboost-system-dev
       - libboost-thread-dev
+      - lcov
+      - gcovr
       - make
       - unzip
+
 script:
   - mkdir -p build && cd build
-  - cmake -DCMAKE_INSTALL_PREFIX=/rsc ..
-  - make
+  - cmake -DCMAKE_INSTALL_PREFIX=/rsc -DCMAKE_BUILD_TYPE=coverage ..
+  - make -j3
   - make test
-  - make DESTDIR=install_dir install
-  - tar -C install_dir -czf "rsc-${CC}.tar.gz" rsc
-  - |
-    cat << EOF > bintray.json
-    {
-      "package": {
-        "name": "rsc",
-        "repo": "travis-artifacts",
-        "subject": "open-rsx",
-        "desc": "Travis artifact for branch ${TRAVIS_BRANCH}",
-        "vcs_url": "https://github.com/open-rsx/rsc.git",
-        "licenses": ["LGPL-3.0"]
-      },
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 
-      "version": {
-        "name": "travis-${TRAVIS_BRANCH}",
-        "vcs_tag": "${TRAVIS_BRANCH}"
-      },
+jobs:
+  include:
+    - &deploy-stage
+      compiler: clang
+      stage: archive
+      script:
+        - mkdir -p build && cd build
+        - cmake -DCMAKE_INSTALL_PREFIX=/rsc -DBUILD_EXAMPLES=OFF -DBUILD_TESTS=OFF ..
+        - make -j3
+        - make DESTDIR=install_dir install
+        - tar -C install_dir -czf "rsc-${CC}.tar.gz" rsc
+        - |
+          cat << EOF > bintray.json
+          {
+            "package": {
+              "name": "rsc",
+              "repo": "travis-artifacts",
+              "subject": "open-rsx",
+              "desc": "Travis artifact for branch ${TRAVIS_BRANCH}",
+              "vcs_url": "https://github.com/open-rsx/rsc.git",
+              "licenses": ["LGPL-3.0"]
+            },
 
-      "files": [
-        {
-          "includePattern": "\./(rsc-.*).tar.gz",
-          "uploadPattern": "\$1-${TRAVIS_BRANCH}.tar.gz",
-          "matrixParams": {
-            "override": 1
+            "version": {
+              "name": "travis-${TRAVIS_BRANCH}",
+              "vcs_tag": "${TRAVIS_BRANCH}"
+            },
+
+            "files": [
+              {
+                "includePattern": "\./(rsc-.*).tar.gz",
+                "uploadPattern": "\$1-${TRAVIS_BRANCH}.tar.gz",
+                "matrixParams": {
+                  "override": 1
+                }
+              }
+            ],
+            "publish": true
           }
-        }
-      ],
-      "publish": true
-    }
-    EOF
-deploy:
-  provider: bintray
-  file: "bintray.json"
-  user: "languitar"
-  key: '${BINTRAY_KEY}'
-  skip_cleanup: true
-  on:
-    repo: open-rsx/rsc
-    all_branches: true
+          EOF
+      after_success:
+      deploy:
+        provider: bintray
+        file: "bintray.json"
+        user: "languitar"
+        key: '${BINTRAY_KEY}'
+        skip_cleanup: true
+        on:
+          repo: open-rsx/rsc
+          all_branches: true
+    - <<: *deploy-stage
+      compiler: gcc

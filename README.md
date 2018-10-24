@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/open-rsx/rsc.svg?branch=master)](https://travis-ci.org/open-rsx/rsc) [![Coverage Report](https://codecov.io/gh/open-rsx/rsc/branch/master/graph/badge.svg)](https://codecov.io/gh/open-rsx/rsc)
+
 # Introduction #
 
 RSC is a utility library used in the C++ implementation of the
