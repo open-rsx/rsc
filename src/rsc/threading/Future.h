@@ -156,14 +156,7 @@ public:
             if (timeout <= 0) {
                 condition.wait(lock);
             } else {
-#if BOOST_VERSION >= 105000
                 if (!condition.timed_wait(lock, boost::posix_time::microseconds(long(timeout) * 1000000))) {
-#else
-                boost::xtime xt;
-                boost::xtime_get(&xt, boost::TIME_UTC);
-                xt.sec += timeout;
-                if (!condition.timed_wait(lock, xt)) {
-#endif
                     throw FutureTimeoutException(
                             boost::str(
                                     boost::format(

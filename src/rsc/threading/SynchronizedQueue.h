@@ -139,13 +139,7 @@ public:
             if (timeoutMs == 0) {
                 this->condition.wait(lock);
             } else {
-#if BOOST_VERSION >= 105000
                 if (!this->condition.timed_wait(lock, boost::posix_time::milliseconds(timeoutMs))) {
-#else
-                const boost::system_time timeout = boost::get_system_time()
-                    + boost::posix_time::milliseconds(timeoutMs);
-                if (!this->condition.timed_wait(lock, timeout)) {
-#endif
                     throw QueueEmptyException(boost::str(boost::format("No element available on queue within %d ms.") % timeoutMs));
                 }
             }
@@ -180,13 +174,7 @@ public:
             if (timeoutMs == 0) {
                 this->condition.wait(lock);
             } else {
-#if BOOST_VERSION >= 105000
                 if (!this->condition.timed_wait(lock, boost::posix_time::milliseconds(timeoutMs))) {
-#else
-                const boost::system_time timeout = boost::get_system_time()
-                        + boost::posix_time::milliseconds(timeoutMs);
-                if (!this->condition.timed_wait(lock, timeout)) {
-#endif
                     throw QueueEmptyException(boost::str(boost::format("No element available on queue within %d ms.") % timeoutMs));
                 }
             }
