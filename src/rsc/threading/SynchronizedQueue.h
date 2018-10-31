@@ -81,7 +81,9 @@ public:
      * @param sizeLimit max allowed size of the queue. If the limit is reached
      *                  and another element is added to the queue, the oldest
      *                  element is removed. 0 means unlimited
-     * @param
+     * @param dropHandler a function that should be called in case the
+     *                    queue must drop events because its size has
+     *                    reached @a sizeLimit.
      */
     explicit SynchronizedQueue(const unsigned int& sizeLimit = 0,
                                dropHandlerType dropHandler = 0) :
